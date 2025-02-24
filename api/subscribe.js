@@ -4,6 +4,10 @@ const cors = require("cors"); // Import library CORS
 const GITHUB_REPO = "NyxObscura/emails";  
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN; 
 
+// In-memory storage untuk antispam
+const requestTimestamps = new Map();
+const SPAM_INTERVAL = 30000; // 30 detik
+
 module.exports = async (req, res) => {
     // Enable CORS
     cors()(req, res, async () => {
@@ -11,6 +15,20 @@ module.exports = async (req, res) => {
 
         const { email } = req.body;
         if (!email) return res.status(400).json({ error: "Email is required" });
+
+        // Cek format email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) return res.status(400).json({ error: "Invalid email format!" });
+
+        // Antispam: Cek jika request terlalu sering dari IP yang sama
+        const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+        const lastRequestTime = requestTimestamps.get(ip);
+
+        if (lastRequestTime && Date.now() - lastRequestTime < SPAM_INTERVAL) {
+            return res.status(429).json({ error: "Terlalu banyak permintaan! Coba lagi nanti." });
+        }
+
+        requestTimestamps.set(ip, Date.now());
 
         try {
             const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/emails.json`, {
@@ -22,6 +40,11 @@ module.exports = async (req, res) => {
             const data = await response.json();
             const content = Buffer.from(data.content, "base64").toString("utf-8");
             const emails = JSON.parse(content);
+
+            // Cek apakah email sudah ada dalam database
+            if (emails.includes(email)) {
+                return res.status(409).json({ error: "Email sudah ada dalam database!" });
+            }
 
             emails.push(email);
 
