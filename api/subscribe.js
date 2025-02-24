@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 
-const GITHUB_REPO = "NyxObscura/mail-backend";  
+const GITHUB_REPO = "NyxObscura/emails";  
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN; 
 
 module.exports = async (req, res) => {
