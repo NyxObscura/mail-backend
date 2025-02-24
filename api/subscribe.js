@@ -69,7 +69,7 @@ module.exports = async (req, res) => {
 
             if (!updateResponse.ok) throw new Error("Failed to update emails.json");
 
-            res.json({ message: "Email berhasil disimpan!" });
+            res.json({ message: "Email berhasil dikirim!" });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
