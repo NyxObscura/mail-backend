@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 
 const GITHUB_REPO = "NyxObscura/mail-backend";  // Ganti dengan repo kamu
-const GITHUB_TOKEN = "PROCESS.env.GITHUB_TOKEN"; // Simpan sebagai secret di Vercel
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Simpan sebagai secret di Vercel
 
 module.exports = async (req, res) => {
     if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
