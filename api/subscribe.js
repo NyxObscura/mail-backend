@@ -1,8 +1,8 @@
 const fetch = require("node-fetch");
-const cors = require("cors"); // Import library CORS
-
+const cors = require("cors"); 
 const GITHUB_REPO = "NyxObscura/emails";  
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN; 
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const API_KEY = process.env.APIKEY_A;
 
 // In-memory storage untuk antispam
 const requestTimestamps = new Map();
@@ -12,6 +12,12 @@ module.exports = async (req, res) => {
     // Enable CORS
     cors()(req, res, async () => {
         if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
+
+        // **Cek API Key**
+        const apiKey = req.headers["x-api-key"];
+        if (!apiKey || apiKey !== API_KEY) {
+            return res.status(403).json({ error: "Akses ditolak! API Key tidak valid." });
+        }
 
         const { email } = req.body;
         if (!email) return res.status(400).json({ error: "Email is required" });
