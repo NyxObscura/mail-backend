@@ -10,6 +10,10 @@ body {
     color: #fff;
     text-align: center;
     padding: 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .container {
@@ -72,4 +76,44 @@ h2 {
 
 .btn:hover {
     background: #e84118;
+}
+
+/* Footer Styles */
+footer {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #ff4757;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #e84118;
+}
+
+.footer-copyright {
+    font-size: 14px;
+    color: #ddd;
+    margin-top: 10px;
 }
