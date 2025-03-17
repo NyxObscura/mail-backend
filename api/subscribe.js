@@ -3,8 +3,6 @@ const cors = require("cors");
 const GITHUB_REPO = "NyxObscura/emails";  
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const API_KEY = process.env.APIKEY_A;
-
-// In-memory storage untuk antispam
 const requestTimestamps = new Map();
 const SPAM_INTERVAL = 30000; // 30 detik
 
